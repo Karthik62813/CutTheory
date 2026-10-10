@@ -17,7 +17,8 @@ on(window,'pointermove',e=>{const p=e as PointerEvent;R.style.setProperty('--mx'
 if(fine&&!rm){
 const c=d.getElementById('cur')!;let cx=0,cy=0,mx=0,my=0,seen=false;
 on(window,'pointermove',e=>{const p=e as PointerEvent;mx=p.clientX;my=p.clientY;if(!seen){seen=true;cx=mx;cy=my;c.style.opacity='1'}});
-on(d,'pointerover',e=>{const t=e.target as Element;c.classList.toggle('big',!!t.closest('a,button,.tl,.wk'));c.dataset.t=t.closest('.sb')?'':t.closest('.wk')?'View':t.closest('.tl')?'Drag':''});
+// Over a project card the cursor stays a plain ring, so it never covers the video playing in the card.
+on(d,'pointerover',e=>{const t=e.target as Element,k=!!t.closest('.wk');c.classList.toggle('big',!k&&!!t.closest('a,button,.tl'));c.dataset.t=!k&&t.closest('.tl')?'Drag':''});
 const loop=()=>{cx+=(mx-cx)*.18;cy+=(my-cy)*.18;c.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`;raf=requestAnimationFrame(loop)};loop();
 $$('.btn').forEach(b=>{on(b,'pointermove',e=>{const p=e as PointerEvent,r=b.getBoundingClientRect();b.style.transform=`translate(${(p.clientX-r.left-r.width/2)*.25}px,${(p.clientY-r.top-r.height/2)*.35}px)`});on(b,'pointerleave',()=>{b.style.transform=''})});}
 return()=>{off.forEach(f=>f());cancelAnimationFrame(raf)};

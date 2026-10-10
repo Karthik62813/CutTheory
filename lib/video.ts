@@ -13,7 +13,7 @@ function ytId(u:URL){
 const h=u.hostname.replace(/^(www|m)\./,'');
 if(h!=='youtu.be'&&h!=='youtube.com'&&h!=='youtube-nocookie.com')return null;
 return (h==='youtu.be'?u.pathname.slice(1):u.searchParams.get('v')??u.pathname.match(/^\/(?:shorts|embed|live)\/([\w-]+)/)?.[1])?.match(/^[\w-]{11}$/)?.[0]??null;}
-const youtubeId=(url:string|null)=>{try{return url?ytId(new URL(url)):null}catch{return null}};
+export const youtubeId=(url:string|null)=>{try{return url?ytId(new URL(url)):null}catch{return null}};
 // YouTube's own cover images. mqdefault always exists and, unlike hqdefault, has no black bars, so it crops cleanly into a tall card.
 const ytImg=(id:string,size:'maxresdefault'|'mqdefault')=>`https://i.ytimg.com/vi/${id}/${size}.jpg`;
 export const youtubeThumbSmall=(url:string|null)=>{const id=youtubeId(url);return id?ytImg(id,'mqdefault'):null};
