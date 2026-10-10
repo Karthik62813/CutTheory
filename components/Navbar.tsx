@@ -1,0 +1,1 @@
+export default function Navbar(){return(<header><nav aria-label="Main"><a className="logo" href="#top"><span className="mk"/><b>Karthik</b></a><a className="hl" href="#work">Work</a><a className="hl" href="#services">Services</a><a className="hl" href="#about">About</a><a className="btn" href="#contact">Contact</a><span id="pg"/></nav></header>);}

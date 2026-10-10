@@ -1,0 +1,1 @@
+export default function BackgroundEffects(){return(<><div className="bg" aria-hidden="true"><i/><i/><i/><i/></div><div className="spot" aria-hidden="true"/><div className="grain" aria-hidden="true"/><div id="cur" aria-hidden="true"/></>);}

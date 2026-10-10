@@ -1,0 +1,2 @@
+import type {Settings} from '@/lib/types';
+export default function Contact({s}:{s:Settings}){return(<section id="contact"><div className="w"><h2><span className="o">Got footage?</span> <span className="g">Send it over.</span></h2><a className="mail" href={`mailto:${s.email??''}`}>{s.email}</a><div className="so"><a href={s.instagram_url??'#'}>Instagram</a><a href={s.linkedin_url??'#'}>LinkedIn</a><a href={s.whatsapp_number?`https://wa.me/${s.whatsapp_number}`:'#'}>WhatsApp</a></div></div></section>);}
