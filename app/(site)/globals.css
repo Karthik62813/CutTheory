@@ -88,9 +88,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 90px)}
 .chip{transition:color .25s,border-color .25s,transform .25s}
 .chip:hover{color:var(--fg);border-color:var(--fg);transform:translateY(-2px)}
 .th{background-size:200% 200%;background-position:0 0;transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .2s ease-out,background-position .9s,box-shadow .4s}
-.th::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.3),transparent 55%);opacity:0;transition:opacity .3s}
 .wk:hover .th{background-position:100% 100%;box-shadow:0 24px 50px -20px var(--k)}
-.wk:hover .th::after{opacity:1}
 .cap strong{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
 .wk:hover .cap strong{transform:translateX(8px)}
 .cap em::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--k);margin-right:.45rem}
@@ -157,9 +155,10 @@ h2::after{content:"";display:block;width:min(260px,50%);height:3px;margin-top:1r
 .pc{display:flex;align-items:center;gap:.5rem;margin:0;color:var(--mut)}
 .pc i{width:8px;height:8px;border-radius:50%;background:var(--k,var(--ph))}
 .pv{display:flex;justify-content:center;margin:2rem 0 .5rem}
-.pv video,.pv iframe{display:block;max-width:100%;max-height:78vh;border-radius:14px;border:1px solid var(--line);background:#000;box-shadow:0 30px 80px -30px var(--k,#8b5cf6)}
-.pv iframe{width:100%;aspect-ratio:16/9;max-height:none}
-.pv iframe.tall{width:auto;height:min(78vh,(100vw - 2.5rem)*16/9);aspect-ratio:9/16}
+.pv video,.pv .pf{display:block;max-width:100%;max-height:78vh;border-radius:14px;border:1px solid var(--line);background:#000;box-shadow:0 30px 80px -30px var(--k,#8b5cf6)}
+.pv .pf{position:relative;overflow:hidden;width:100%;aspect-ratio:16/9;max-height:none}
+.pv .pf.tall{width:auto;height:min(78vh,(100vw - 2.5rem)*16/9);aspect-ratio:9/16}
+.pv .pf>iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .pv-x{display:grid;place-items:center;width:min(340px,100%);aspect-ratio:9/16;border-radius:14px;color:#fff;font-weight:600;background:linear-gradient(135deg,var(--k,#7c4ddb),color-mix(in srgb,var(--k,#7c4ddb) 25%,#000))}
 .pd{white-space:pre-line}
 .tg{display:flex;flex-wrap:wrap;gap:.4rem}
@@ -171,11 +170,10 @@ h2::after{content:"";display:block;width:min(260px,50%);height:3px;margin-top:1r
 .nf .tc{color:var(--ph);margin:0}
 /* .o also outlines headline words; on the outline button it must not hollow out the label. */
 .btn.o{-webkit-text-fill-color:currentColor;-webkit-text-stroke:0}
-/* A YouTube project without a preview clip plays its video in the card, scaled from 16:9 to cover the tall frame. Clicks still go to the card link.
-   The extra 1.3x zoom pushes YouTube's title bar and "More videos" button outside the card. */
+/* A YouTube project without a preview clip plays its video in the card. The full-size player is scaled (--s, set by the card) to cover the tall frame. Clicks still go to the card link. */
 .th .yt{position:absolute;inset:0;opacity:0;transition:opacity .4s;pointer-events:none}
 .th .yt.on{opacity:1}
-.th .yt iframe{position:absolute;top:-15%;left:50%;height:130%;width:410.86%;transform:translateX(-50%);border:0}
+.th .yt iframe{position:absolute;top:50%;left:50%;border:0;transform:translate(-50%,-50%) scale(var(--s,.5))}
 /* Sound control: the volume slider slides out of the sound button on hover or keyboard focus. */
 .snd{position:absolute;top:10px;right:10px;z-index:2;display:flex;flex-direction:row-reverse;align-items:center}
 .snd .sb{position:static}
@@ -184,3 +182,36 @@ h2::after{content:"";display:block;width:min(260px,50%);height:3px;margin-top:1r
 .vol input{width:100%;margin:0;accent-color:var(--ph);cursor:pointer}
 .vol:has(:focus-visible){outline:2px solid var(--ph);outline-offset:2px}
 .vol input:focus-visible{outline:none}
+/* Project page YouTube player: YouTube's player is built full size inside .yh and scaled to fit (--s, set by the player);
+   these controls sit on top. The click layer (.ys) plays and pauses. */
+.yp{outline:none;-webkit-user-select:none;user-select:none}
+.yp:focus-visible{outline:2px solid var(--ph);outline-offset:3px}
+.yh{position:absolute;inset:0;pointer-events:none}
+.yh iframe{position:absolute;top:50%;left:50%;border:0;transform:translate(-50%,-50%) scale(var(--s,.5))}
+.ys{position:absolute;inset:0;cursor:pointer}
+.yp.idle .ys{cursor:none}
+.yo{position:absolute;inset:0;background:#000;pointer-events:none}
+.yo img{width:100%;height:100%;object-fit:cover}
+.ybig{position:absolute;top:50%;left:50%;width:76px;height:76px;margin:-38px 0 0 -38px;padding:0;border:0;border-radius:50%;background:var(--fg);color:var(--bg);display:grid;place-items:center;cursor:pointer;box-shadow:0 14px 40px -10px rgba(0,0,0,.7);transition:transform .25s}
+.ybig:hover{transform:scale(1.08)}
+.ybig svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ybig svg path[fill]{transform:translateX(1.5px)}
+.yspin{position:absolute;top:50%;left:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;animation:yspin .8s linear infinite;pointer-events:none}
+@keyframes yspin{to{transform:rotate(360deg)}}
+.yerr{position:absolute;inset:0;display:grid;place-content:center;gap:.4rem;padding:1rem;text-align:center;background:#000;color:var(--mut)}
+.yerr p{margin:0}
+.yerr a{color:var(--fg);text-decoration:underline}
+.yc{position:absolute;left:0;right:0;bottom:0;padding:32px 12px 8px;background:linear-gradient(transparent,rgba(0,0,0,.75));transition:opacity .3s}
+.yp.idle .yc{opacity:0;pointer-events:none}
+.yp:has(.yc :focus-visible) .yc{opacity:1;pointer-events:auto}
+.yseek{display:block;width:100%;margin:0 0 4px;accent-color:var(--ph);cursor:pointer}
+.ycr{display:flex;align-items:center;gap:4px}
+.ycr button{flex:none;width:38px;height:38px;padding:0;border:0;border-radius:50%;background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer;transition:background .2s}
+.ycr button:hover{background:rgba(255,255,255,.16)}
+.ycr svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.yvol{display:flex;align-items:center}
+.yvol input{width:0;margin:0;opacity:0;accent-color:var(--ph);cursor:pointer;transition:width .25s,opacity .2s,margin .25s}
+.yvol:hover input,.yvol:focus-within input{width:72px;margin:0 6px;opacity:1}
+.ytime{margin-left:4px;font:500 .78rem ui-monospace,Menlo,Consolas,monospace;color:#fff;white-space:nowrap}
+.yfs{margin-left:auto}
+.pv .pf.yp:fullscreen{width:100%;height:100%;max-width:none;max-height:none;aspect-ratio:auto;border:0;border-radius:0}

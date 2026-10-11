@@ -3,7 +3,8 @@ import type {Metadata} from 'next';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import {getSiteData} from '@/lib/data';
-import {embed} from '@/lib/video';
+import {embed,youtubeId} from '@/lib/video';
+import YouTubePlayer from '@/components/YouTubePlayer';
 import Navbar from '@/components/Navbar';import Footer from '@/components/Footer';import SiteEffects from '@/components/SiteEffects';
 export const revalidate=3600;
 type Props={params:Promise<{slug:string}>};
@@ -23,7 +24,8 @@ const facts:[string,string|null,string?][]=[['Client',p.client],['Year',p.year?S
 return(<><Navbar name={settings.name} base="/"/><main id="top" className="w pj" style={{'--k':c?.color} as React.CSSProperties}>
 <Link href="/#work" className="btn o">Back to work</Link>
 <h1>{p.title}</h1>{c&&<p className="pc"><i/>{c.name}</p>}
-<div className="pv">{player?<iframe src={player.src} title={`${p.title} video`} className={player.tall?'tall':undefined} allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowFullScreen referrerPolicy="strict-origin-when-cross-origin"/>
+<div className="pv">{player?.provider==='youtube'?<YouTubePlayer id={youtubeId(src)!} title={p.title} tall={player.tall} poster={p.thumbnail_url}/>
+:player?<div className={player.tall?'pf tall':'pf'}><iframe src={player.src} title={`${p.title} video`} allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowFullScreen referrerPolicy="strict-origin-when-cross-origin"/></div>
 :src?<video src={src} poster={p.thumbnail_url??undefined} controls playsInline preload="metadata"/>
 :<div className="pv-x">Video coming soon</div>}</div>
 <div className="ab">{p.description&&<p className="pd">{p.description}</p>}
